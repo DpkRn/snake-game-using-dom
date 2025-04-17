@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+.cell{
+    @apply border-2 border-solid border-gray-400 box-border p-2 grid place-content-center;
+}
+
+.previous{
+    @apply bg-lime-500 rounded-3xl bg-blend-darken;
+}
+
+.head{
+    @apply bg-[url('snake.png')] bg-contain bg-center rounded-full;
+}
+
+.food{
+    @apply bg-[url('animal.png')] bg-contain bg-center rounded-full;
+}
