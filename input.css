@@ -15,3 +15,7 @@
 .food{
     @apply bg-[url('animal.png')] bg-contain bg-center rounded-full;
 }
+
+.bomb{
+    @apply bg-[url('bomb.png')] bg-contain bg-center rounded-full;
+}

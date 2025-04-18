@@ -25,6 +25,7 @@ let score=0;
 let isLost=false;
 
 let food=[];
+let bomb=[];
 let isUnSettedFood=false;
 
 
@@ -38,16 +39,37 @@ function setFood(){
         setFood();
     }
     food=[foodRow,foodCol];
-    console.log(food)
     const foodCell=document.querySelector(`.cell[data-row="${food[0]}"][data-col="${food[1]}"]`);
-    console.log(foodCell)
     foodCell.classList.add('food');
+}
+
+function setBomb(){
+    const bombRow=Math.floor(Math.random()*12);
+    const bombCol=Math.floor(Math.random()*12);
+    if((head[0]==bombRow&&head[1]==bombCol)||(food[0]==bomb[0]&&food[1]==bomb[1])){
+        setBomb();
+    }
+    if(body.some(item=>item[0]==bombRow&&item[1]==bombCol)){
+        setBomb();
+    }
+    bomb=[bombRow,bombCol];
+    const bombCell=document.querySelector(`.cell[data-row="${bomb[0]}"][data-col="${bomb[1]}"]`);
+    bombCell.classList.add('bomb');
+}
+
+function setScore(){
+    const p=document.querySelector('p');
+    p.innerText=`SCORE: ${score}`;
+
 }
 
 function unsetFood(){
     const foodCell=document.querySelector(`.cell[data-row="${food[0]}"][data-col="${food[1]}"]`);
     foodCell.classList.remove('food');
-    isUnSettedFood=true;
+}
+function unsetBomb(){
+    const bombCell=document.querySelector(`.cell[data-row="${bomb[0]}"][data-col="${bomb[1]}"]`);
+    bombCell.classList.remove('bomb');
 }
 
 function addNewTail(){
@@ -113,7 +135,7 @@ function setMove(){
 }
 
 function checkBoundary(){
-    if(head[0]<0||head[0]>=12||head[1]<0||head[1]>=12||isCollapse()){
+    if(head[0]<0||head[0]>=12||head[1]<0||head[1]>=12||isCollapse()||(bomb[0]==head[0]&&bomb[1]==head[1])){
         clearInterval(id);
         isLost=true;
         alert('lost');
@@ -130,10 +152,15 @@ function interval(){
         if(checkBoundary()) return;
         if(isEaten()){
             score++;
+            setScore();
             addNewTail()
             unsetFood();
             setFood();
-            speed-=50;
+            unsetBomb();
+            setBomb();
+            if(speed>100){
+                speed-=50;
+            }
             clearInterval(id)
             id=interval();
         }
@@ -154,4 +181,5 @@ document.addEventListener('keydown',(e)=>{
 })
 createUI();
 setFood();
+setBomb();
 id=interval();
